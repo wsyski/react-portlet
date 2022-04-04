@@ -1,13 +1,13 @@
 import React, { Suspense } from "react";
 import styled from "styled-components";
-import Loader from "./components/Loader";
-import ErrorBoundary from "./components/ErrorBoundary";
+import Loader from "./Loader";
+import ErrorBoundary from "./ErrorBoundary";
 
 import "./css/styles.css";
 
 const LazyCalendar = React.lazy(() => {
     return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
-        () => import("./components/Calendar")
+        () => import("./Calendar")
     );
 });
 
