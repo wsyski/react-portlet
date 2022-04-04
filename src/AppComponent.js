@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
 
-import "./styles.css";
+import "./css/styles.css";
 
 const LazyCalendar = React.lazy(() => {
     return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
