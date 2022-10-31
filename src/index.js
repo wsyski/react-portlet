@@ -1,6 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import AppComponent from "./AppComponent";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<AppComponent />, rootElement);
+import AppComponent from './AppComponent';
+import 'react-shared';
+
+/**
+ * This is the main entry point of the portlet.
+ *
+ * See https://tinyurl.com/js-ext-portlet-entry-point for the most recent
+ * information on the signature of this function.
+ *
+ * @param  {Object} params a hash with values of interest to the portlet
+ * @return {void}
+ */
+export default function main(params) {
+	 var portletElement = document.getElementById(params.portletElementId);
+
+	 ReactDOM.render(
+		<AppComponent
+			portletNamespace={params.portletNamespace}
+			contextPath={params.contextPath}
+			portletElementId={params.portletElementId}
+			configuration={params.configuration}
+		 />,
+		portletElement
+	);
+
+	Liferay.once('destroyPortlet', () => {
+		ReactDOM.unmountComponentAtNode(portletElement);
+	});
+}
