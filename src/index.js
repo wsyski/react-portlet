@@ -1,32 +1,75 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AppComponent from "./AppComponent";
 
-import AppComponent from './AppComponent';
-import 'react-shared';
+var PORTLET_NAMESPACE_DEFAULT = '_portlet_namespace_';
 
-/**
- * This is the main entry point of the portlet.
- *
- * See https://tinyurl.com/js-ext-portlet-entry-point for the most recent
- * information on the signature of this function.
- *
- * @param  {Object} params a hash with values of interest to the portlet
- * @return {void}
- */
-export default function main(params) {
-	 var portletElement = document.getElementById(params.portletElementId);
+var LIFERAY_PARAMS_DEFAULT = {
+	configuration: {
+		portletInstance: {},
+		system: {},
+	},
+	contextPath: '',
+	portletElementId: 'js-portlet-' + PORTLET_NAMESPACE_DEFAULT,
+	portletNamespace: PORTLET_NAMESPACE_DEFAULT,
+};
 
-	 ReactDOM.render(
-		<AppComponent
-			portletNamespace={params.portletNamespace}
-			contextPath={params.contextPath}
-			portletElementId={params.portletElementId}
-			configuration={params.configuration}
-		 />,
+var DRINK = 'drink';
+
+var PORTLET_INSTANCE_DEFAULT = {
+	[DRINK]: 'orange',
+};
+
+function setLiferayParamsDefaults(
+	liferayParams,
+	portletInstance,
+	system
+) {
+	let liferayParamsConfiguration = liferayParams.configuration;
+	if (portletInstance) {
+		liferayParamsConfiguration = {
+			...liferayParamsConfiguration,
+			portletInstance: {
+				...portletInstance,
+				...liferayParamsConfiguration,
+			},
+		};
+	}
+	if (system) {
+		liferayParamsConfiguration = {
+			...liferayParamsConfiguration,
+			system: {...system, ...liferayParamsConfiguration.system},
+		};
+	}
+
+	return {...liferayParams, configuration: liferayParamsConfiguration};
+}
+
+
+export default function main(liferayParams) {
+	var liferayParamsWithDefaults = setLiferayParamsDefaults(
+		liferayParams,
+		PORTLET_INSTANCE_DEFAULT,
+		undefined
+	);
+	var portletElement = document.getElementById(liferayParamsWithDefaults.portletElementId);
+	var markup = React.createElement(AppComponent, {...liferayParamsWithDefaults});
+	ReactDOM.render(
+		process.env.NODE_ENV === 'development' ? (
+			<React.StrictMode>{markup}</React.StrictMode>
+		) : (
+			<React.Fragment>{markup}</React.Fragment>
+		),
 		portletElement
 	);
+	if (process.env.NODE_ENV === 'production') {
+		Liferay.once('destroyPortlet', () => {
+			ReactDOM.unmountComponentAtNode(portletElement);
+		});
+	}
+};
 
-	Liferay.once('destroyPortlet', () => {
-		ReactDOM.unmountComponentAtNode(portletElement);
-	});
+if (process.env.NODE_ENV === 'development') {
+	main(LIFERAY_PARAMS_DEFAULT);
 }
+
