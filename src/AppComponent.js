@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function AppComponent(liferayParams) {
-	console.log('liferayParams', liferayParams);
+	console.log('liferayParams', liferayParams, 'env', process.env);
 	return (
 		<div>
 			<div>

@@ -42,6 +42,9 @@ function setLiferayParamsDefaults(
 	return {...liferayParams, configuration: liferayParamsConfiguration};
 }
 
+function isPortal() {
+	return typeof Liferay.once !== 'undefined';
+}
 
 export default function main(liferayParams) {
 	var liferayParamsWithDefaults = setLiferayParamsDefaults(
@@ -51,22 +54,20 @@ export default function main(liferayParams) {
 	);
 	var portletElement = document.getElementById(liferayParamsWithDefaults.portletElementId);
 	var markup = React.createElement(AppComponent, {...liferayParamsWithDefaults});
-	ReactDOM.render(
-		process.env.NODE_ENV === 'development' ? (
-			<React.StrictMode>{markup}</React.StrictMode>
-		) : (
+	ReactDOM.render(isPortal() ? (
 			<React.Fragment>{markup}</React.Fragment>
+		) : (
+			<React.StrictMode>{markup}</React.StrictMode>
 		),
 		portletElement
 	);
-	if (process.env.NODE_ENV !== 'development') {
+	if (isPortal()) {
 		Liferay.once('destroyPortlet', () => {
 			ReactDOM.unmountComponentAtNode(portletElement);
 		});
 	}
 };
 
-if (process.env.NODE_ENV === 'development') {
+if (!isPortal()) {
 	main(LIFERAY_PARAMS_DEFAULT);
 }
-
