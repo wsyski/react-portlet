@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppComponent from "./AppComponent";
+import 'react-shared';
 
 var PORTLET_NAMESPACE_DEFAULT = '_portlet_namespace_';
 
