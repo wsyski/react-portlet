@@ -1,2 +1,2 @@
-Liferay.ThemeDisplay.setLanguageId('en_GB');
-Liferay.ThemeDisplay.setScopeGroupId(39847);
+Liferay.ThemeDisplay.setLanguageId('en_US');
+Liferay.ThemeDisplay.setScopeGroupId(41582);

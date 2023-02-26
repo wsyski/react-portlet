@@ -3,7 +3,7 @@
 
 	function ThemeDisplay() {
 		let _languageId = 'en_US';
-		let _scopeGroupId = 39847;
+		let _scopeGroupId = 41582;
 
 		function getLanguageId() {
 			return _languageId;
