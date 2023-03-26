@@ -1,7 +1,7 @@
 {
   "name": "react-portlet",
   "version": "1.0.0",
-  "description": "React Portlet",
+  "description": "React portlet",
   "license": "UNLICENSED",
   "main": "index.js",
   "dependencies": {
