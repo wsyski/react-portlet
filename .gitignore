@@ -3,3 +3,7 @@
 /dist
 /liferay-npm-bundler-report.html
 /yarn.lock
+/.idea
+*.css
+*.map
+
