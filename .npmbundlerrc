@@ -1,6 +1,9 @@
 {
   "config": {
   },
+  "exclude": {
+    "*": ["**/__mocks__/**/*", "**/__tests__/**/*"]
+  },
   "rules": [
     {
       "test": "\\.json$",
